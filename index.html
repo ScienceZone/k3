@@ -1,17 +1,448 @@
 <!DOCTYPE html>
-<html lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="favicon.ico">
-    <title>jiakao</title>
-  <link href="static/js/app.js" rel="preload" as="script"><link href="static/js/chunk-vendors.js" rel="preload" as="script"></head>
-  <body>
-    <noscript>
-      <strong>We're sorry but jiakao doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  <script type="text/javascript" src="static/js/chunk-vendors.js"></script><script type="text/javascript" src="static/js/app.js"></script></body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+  <!-- 引入样式文件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.12/lib/index.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.12/lib/vant.min.js"></script>
+
+
+
+  <!-- 引入样式文件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.12/lib/index.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/vant@2.12/lib/vant.min.js"></script>
+
+
+  <link href="//vjs.zencdn.net/7.0.0/video-js.css" rel="stylesheet">
+
+  <!-- If you'd like to support IE8 -->
+  <script src="//vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+
+</head>
+
+<body>
+
+
+  <div id="app">
+
+    <div v-if='PCIsTrue'>
+      <el-breadcrumb separator="/" style="margin:30px 0 30px 20px">
+        <el-breadcrumb-item><a href="/">驾考宝典</a></el-breadcrumb-item>
+        <el-breadcrumb-item>科目三</el-breadcrumb-item>
+        <el-breadcrumb-item>教学视频</el-breadcrumb-item>
+      </el-breadcrumb>
+
+      <el-table :data="jkbdJson" border style="width: 100%">
+        <el-table-column prop="id" label="ID" width="180">
+        </el-table-column>
+        <el-table-column prop="title" label="项目名称">
+          <template slot-scope="scope">
+            <el-tag prop="title">{{scope.row.title}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="videoDuration" label="视频长度">
+        </el-table-column>
+        <el-table-column prop="src" label="播放地址">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="open(scope.row.title,scope.row.src)">播放</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-breadcrumb separator="/" style="margin:30px 0 30px 20px">
+        <el-breadcrumb-item><a href="/">驾校一点通</a></el-breadcrumb-item>
+        <el-breadcrumb-item>科目三</el-breadcrumb-item>
+        <el-breadcrumb-item>教学视频</el-breadcrumb-item>
+      </el-breadcrumb>
+
+      <el-table :data="jxydtJson" border style="width: 100%">
+        <el-table-column prop="id" label="ID" width="180">
+        </el-table-column>
+        <el-table-column prop="title" label="项目名称">
+          <template slot-scope="scope">
+            <el-tag prop="title">{{scope.row.title}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="videoDuration" label="视频长度">
+        </el-table-column>
+        <el-table-column prop="src" label="播放地址">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="open(scope.row.title,scope.row.src)">播放</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+
+    <div v-if="phonrIsTrue">
+      <el-breadcrumb separator="/" style="margin:30px 0 30px 20px">
+        <el-breadcrumb-item><a href="/">驾考宝典</a></el-breadcrumb-item>
+        <el-breadcrumb-item>手机端</el-breadcrumb-item>
+        <el-breadcrumb-item>科目三</el-breadcrumb-item>
+        <el-breadcrumb-item>教学视频</el-breadcrumb-item>
+      </el-breadcrumb>
+
+      <van-list finished-text="没有更多了">
+        <van-cell v-for="item in jkbdJson" :key="item.id" :title="item.title" style="color:#1989fa" />
+        <template #title>
+          <span class="custom-title">{{item.title}}</span>
+          <el-button type="text" size="small" @click="open(item.title,item.src)" style="float: right;">播放
+          </el-button>
+        </template>
+      </van-list>
+
+
+
+      <el-breadcrumb separator="/" style="margin:30px 0 30px 20px">
+        <el-breadcrumb-item><a href="/">驾校一点通</a></el-breadcrumb-item>
+        <el-breadcrumb-item>手机端</el-breadcrumb-item>
+        <el-breadcrumb-item>科目三</el-breadcrumb-item>
+        <el-breadcrumb-item>教学视频</el-breadcrumb-item>
+      </el-breadcrumb>
+
+
+      <van-list finished-text="没有更多了">
+        <van-cell v-for="item in jxydtJson" :key="item.id" :title="item.title" style="color:#1989fa" />
+        <template #title>
+          <span class="custom-title">{{item.title}}</span>
+          <el-button type="text" size="small" @click="open(item.title,item.src)" style="float: right;">播放
+          </el-button>
+        </template>
+      </van-list>
+
+    </div>
+
+    <!-- 弹出层 -->
+    <el-dialog :title="title" :visible.sync="dialogTableVisible" width="90%" :before-close="handleClose"
+      v-if="showExperienceGroup">
+      <video id="video" class="video-js vjs-default-skin" controls preload="none" autoplay="autoplay" width="100%"
+        height="100%">
+        <source :src="url" type="video/mp4">
+      </video>
+    </el-dialog>
+
+  </div>
+</body>
+
+<script>
+  var app = new Vue({
+    el: '#app',
+    data() {
+      return {
+        url: "",
+        PCIsTrue: false,
+        title: "",
+        dialogTableVisible: false,
+        showExperienceGroup: true,
+        phonrIsTrue: false,
+        windowWidth: document.documentElement.clientWidth,  //实时屏幕宽度
+        windowHeight: document.documentElement.clientHeight,   //实时屏幕高度
+        jkbdJson: [
+          {
+            "id": 1456426,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/c673ede2ffc8408389ad0b708936cfc0.high.mp4",
+            "title": "驾考-科目三-模拟夜间场景灯光使用",
+            "videoDuration": "205",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/14/716accb7f759463386cff1e45e427e77.png!png"
+          },
+          {
+            "id": 1456415,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/6d241ce036634ca9a0a6e2f88a9a9946.high.mp4",
+            "title": "驾考-科目三-上车准备",
+            "videoDuration": "113",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/13/d2e7000eb1e64633a387c181b592ebd7.png!png"
+          },
+          {
+            "id": 1456433,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/3c8001decae84342bc6d1bcefb71f6be.high.mp4",
+            "title": "驾考-科目三-起步",
+            "videoDuration": "147",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/11/6a63db58f0e84c3a869ad2e05bc932c1.png!png"
+          },
+          {
+            "id": 1456430,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/a0fc6a66abbe4d27a2f6a490a8429734.high.mp4",
+            "title": "驾考-科目三-直线行驶",
+            "videoDuration": "92",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/28/11/08f3e3ca3c3345f89fac38b2e4e3d222.png!png"
+          },
+          {
+            "id": 1456421,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/6a67cc50e20549f8b4303ffed9e298b7.high.mp4",
+            "title": "驾考-科目三-变更车道",
+            "videoDuration": "105",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/13/61c7be428a864bd69da5115125a25656.png!png"
+          },
+          {
+            "id": 1456442,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/c4648ad18dc44948b19df92409696ebc.high.mp4",
+            "title": "驾考-科目三-通过路口",
+            "videoDuration": "91",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/11/b152e84f329d4f529f8029377409fb4b.png!png"
+          },
+          {
+            "id": 1456418,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/863c9747523943079be2a7577eab032c.high.mp4",
+            "title": "驾考-科目三-加减档操作",
+            "videoDuration": "97",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/14/b71efa00cd0148d1bc2b77dbc3cd5bf8.png!png"
+          },
+          {
+            "id": 1456448,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/e4c536abc7134e58b9833d405c06ba6e.high.mp4",
+            "title": "驾考-科目三-路口左转弯",
+            "videoDuration": "112",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/13/d4741f00377248c8ae4b7c6aca6af95b.png!png"
+          },
+          {
+            "id": 1456436,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/bd7b8394ce7e4bd98f829cdbf563e481.high.mp4",
+            "title": "驾考-科目三-路口右转弯",
+            "videoDuration": "102",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/13/738d3e7ec8454ff59f7c217f22645076.png!png"
+          },
+          {
+            "id": 1456417,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/93999124544e4270837b79b96d581a02.high.mp4",
+            "title": "驾考-科目三-会车",
+            "videoDuration": "82",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/14/40191981429c4fc48cdf4abe1605cc59.png!png"
+          },
+          {
+            "id": 1456435,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/ea8f3299f4ba4ead8cdab54524fd57ee.high.mp4",
+            "title": "驾考-科目三-超车",
+            "videoDuration": "154",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/14/c59a6bcf86a543da99e90d6711788adf.png!png"
+          },
+          {
+            "id": 1456423,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/05627606ebd24ab1a8cd6f858a919c46.high.mp4",
+            "title": "驾考-科目三-掉头",
+            "videoDuration": "98",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/14/ca55899c39924f3498425659cfcc2409.png!png"
+          },
+          {
+            "id": 1456444,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/694e548e8937479bbb72881bc46db5c9.high.mp4",
+            "title": "驾考-科目三-靠边停车",
+            "videoDuration": "166",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/13/c60a9efed6a5425ebadb749c9efd7a16.png!png"
+          },
+          {
+            "id": 1456450,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/f6dd8c92083a41d0905f778569db2289.high.mp4",
+            "title": "驾考-科目三-通过人行横道线",
+            "videoDuration": "91",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/11/5fe0e2f9da854898a176cbdf48d6161d.png!png"
+          },
+          {
+            "id": 1456440,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/1887c6db5ebb4e6eb023f1019bb6ff63.high.mp4",
+            "title": "驾考-科目三-通过学校区域",
+            "videoDuration": "77",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/11/6371f186d029417e95bbbdfa1b38d731.png!png"
+          },
+          {
+            "id": 1456456,
+            "src": "http://maiche.jmtv.com.cn/2019-03-19/fd826e2d43e943f59c14aec8af3d224c.high.mp4",
+            "title": "驾考-科目三-通过公共汽车站",
+            "videoDuration": "86",
+            "videoThumbnail": "https://toutiao.image.mucang.cn/toutiao-image/2019/03/19/11/428af6e39aba43c6b190071aa7bc2e9a.png!png"
+          }
+        ],
+        jxydtJson: [
+          {
+            id: 938029173010843761,
+            title: '曲线行驶',
+            videoDuration: 105,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/e2b2ec9dc05c4ed6aeac3ec62ea15446.mp4'
+          },
+          {
+            id: 938029173019325656,
+            title: '上车准备',
+            videoDuration: 127,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/17df16af4ed44c68971be5b6942074bb.mp4'
+          },
+          {
+            id: 938029173017290156,
+            title: '转向盘的操作方法',
+            videoDuration: 167,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/76572a0a086c4b4187778a52b6190d76.mp4'
+          },
+          {
+            id: 938029173029951634,
+            title: '直角拐弯',
+            videoDuration: 100,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/e166e3a11017444d80512cc95533e1db.mp4'
+          },
+          {
+            id: 938029173078256817,
+            title: '变速杆的操作方法',
+            videoDuration: 205,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/4be54982e304445887ba970f9e1eb768.mp4'
+          },
+          {
+            id: 938029173098078634,
+            title: '刹车和油门的操作方法',
+            videoDuration: 70,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/%E5%88%B9%E8%BD%A6%E5%92%8C%E6%B2%B9%E9%97%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95_j0319.mp4'
+          },
+          {
+            id: 938029173011781679,
+            title: '油门离合器配合的操作方法',
+            videoDuration: 76,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/%E6%B2%B9%E9%97%A8%E3%80%81%E7%A6%BB%E5%90%88%E5%99%A8%E9%85%8D%E5%90%88%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95_j0319.mp4'
+          },
+          {
+            id: 938029173013425436938029173013425436,
+            title: '转向灯的操作方法',
+            videoDuration: 87,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/c5380f807dbf457fb167534d20c7e137.mp4'
+          },
+          {
+            id: 938029173076856425,
+            title: '离合器的操作方法',
+            videoDuration: 87,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/3d8671f01eab46488dcdd46991a80dec.mp4'
+          },
+          {
+            id: 938029173077382910,
+            title: '直线行驶',
+            videoDuration: 90,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/19e509df8c5d48faa1a51e041d3cc38d.mp4'
+          },
+          {
+            id: 938029173087290145,
+            title: '雾灯的操作方法',
+            videoDuration: 38,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/%E9%9B%BE%E7%81%AF%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95_j0319.mp4'
+          },
+          {
+            id: 938029173062859419,
+            title: '通过公共汽车站',
+            videoDuration: 82,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/00137b54a95f451986c2c6299768b4a0.mp4'
+          },
+          {
+            id: 938029173056784567,
+            title: '上车、下车的操作方法',
+            videoDuration: 180,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/aa64cb179f9448d08a75a29946a35bbb.mp4'
+          },
+          {
+            id: 938029173090638725,
+            title: '危险报警灯的操作方法',
+            videoDuration: 38,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/%E5%8D%B1%E9%99%A9%E6%8A%A5%E8%AD%A6%E7%81%AF%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95_j0319.mp4'
+          },
+          {
+            id: 938029173056784586,
+            title: '变速杆的操作方法',
+            videoDuration: 206,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/70017d0e1df940629b6ea788e1528e3b.mp4'
+          },
+          {
+            id: 938029173012789024,
+            title: '远光灯的操作方法',
+            videoDuration: 39,
+            src: 'https://wos.58cdn.com.cn/XyVuTsRqXyf/videos/%E8%BF%9C%E5%85%89%E7%81%AF%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95_j0319.mp4'
+          },
+        ]
+      }
+    },
+    watch: {
+      windowHeight(val) {
+        let that = this;
+      },
+      windowWidth(val) {
+        let that = this;
+        if (val <= 1024) {
+          this.PCIsTrue = false
+          this.phonrIsTrue = true
+          this.dialogTableVisible = false
+        } else {
+          this.PCIsTrue = true
+          this.phonrIsTrue = false
+          this.dialogTableVisible = false
+        }
+      }
+    },
+    mounted() {
+      if (this.isMobile()) {
+        console.log("移动端");
+        this.PCIsTrue = false
+        this.phonrIsTrue = true
+        this.dialogTableVisible = false
+      } else {
+        console.log("pc端");
+        this.PCIsTrue = true
+        this.phonrIsTrue = false
+        this.dialogTableVisible = false
+      }
+      var that = this;
+      // <!--把window.onresize事件挂在到mounted函数上-->
+      window.onresize = () => {
+        return (() => {
+          window.fullHeight = document.documentElement.clientHeight;
+          window.fullWidth = document.documentElement.clientWidth;
+          that.windowHeight = window.fullHeight;  // 高
+          that.windowWidth = window.fullWidth; // 宽
+        })()
+      };
+    },
+    methods: {
+      handleClose() {
+        this.url = ""
+        this.showExperienceGroup = false
+        this.dialogTableVisible = false
+      },
+      onLoad() {
+        // 异步更新数据
+        // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+        setTimeout(() => {
+          for (let i = 0; i < 10; i++) {
+            this.list.push(this.list.length + 1);
+          }
+
+          // 加载状态结束
+          this.loading = false;
+
+          // 数据全部加载完成
+          if (this.list.length >= 40) {
+            this.finished = true;
+          }
+        }, 1000);
+      },
+      open(title, url) {
+        this.showExperienceGroup = true
+        this.title = title
+        this.url = url
+        this.dialogTableVisible = true
+      },
+      isMobile() {
+        let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+        // localStorage.setItem('isiphone',flag)
+        return flag;
+      }
+    }
+  })
+</script>
+
 </html>
